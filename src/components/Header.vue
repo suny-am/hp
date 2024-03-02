@@ -1,4 +1,13 @@
 <script setup lang="ts">
+
+function getAboutPage() {
+    let aboutPage = document.querySelector(".about-container") as HTMLDivElement
+    if (!aboutPage) return
+
+    aboutPage.style.transition = "all 800ms"
+    aboutPage.style.transform = "translateX(0px)"
+}
+
 </script>
 
 <template>
@@ -9,11 +18,11 @@
         </div>
         <nav>
             <ul>
-                <li>gallery</li>
-                <li>blog</li>
-                <li>shop</li>
-                <li>about</li>
-                <li>contact</li>
+                <li class="disabled"><a href="#">gallery</a></li>
+                <li class="disabled"><a href="#">blog</a></li>
+                <li class="disabled"><a href="#">shop</a></li>
+                <li @click="getAboutPage">about</li>
+                <li><a href="mailto:visualarea.1@gmail.com">contact</a></li>
             </ul>
         </nav>
     </header>
@@ -26,7 +35,6 @@ header {
     display: grid;
     grid-auto-flow: column;
     align-items: center;
-    border-bottom: 1px whitesmoke solid;
     position: fixed;
 
     .logo {
@@ -51,7 +59,27 @@ header {
             list-style: none;
 
             li {
+
+                font-size: 18px;
+                font-weight: bold;
+                text-transform: uppercase;
+                transition: color 1s;
                 margin: 0 1rem;
+                cursor: pointer;
+
+                a {
+                    text-decoration: none;
+                }
+            }
+
+            li.disabled {
+                opacity: 0.5;
+                text-decoration: line-through;
+            }
+
+            li:not(.disabled):hover {
+                color: rgb(204, 155, 96);
+                transition: color 1s;
             }
         }
     }
