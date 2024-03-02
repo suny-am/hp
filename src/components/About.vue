@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, Ref } from "vue";
+import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiCloseCircle } from '@mdi/js';
 
 let aboutContainer = ref(null) as Ref<HTMLDivElement | null>;
 
@@ -20,7 +22,9 @@ onMounted(() => {
 
 <template>
     <div class="about-container" ref="aboutContainer">
-        <div class="about-close-button" icon="mdi-close" @click="closeAbout"> close </div>
+        <div class="about-close-button" @click="closeAbout">
+            <SvgIcon type="mdi" :path="mdiCloseCircle" />
+        </div>
         <h2 class="about-title"> About me</h2>
         <div class="about-content">
             <span>
