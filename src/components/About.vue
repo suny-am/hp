@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, Ref } from "vue";
-import SvgIcon from '@jamescoyle/vue-icon';
-import { mdiCloseCircle } from '@mdi/js';
+import SvgIcon from "@jamescoyle/vue-icon";
+import { mdiCloseCircle } from "@mdi/js";
 
 let aboutContainer = ref(null) as Ref<HTMLDivElement | null>;
 
