@@ -2,9 +2,9 @@
     <main>
         <div ref="galleryContainer" class="gallery-container">
             <div ref="gallery" class="gallery">
-                <div class="image1" ref="image1"></div>
-                <div class="image2" ref="image2"></div>
-                <div class="image3" ref="image3"></div>
+                <div class="gallery-image" ref="image1"></div>
+                <div class="gallery-image" ref="image2"></div>
+                <div class="gallery-image" ref="image3"></div>
             </div>
         </div>
         <button @click="stopSlider">{{ startSliderText }}</button>
@@ -12,7 +12,10 @@
 </template>
 
 <script setup lang="ts">
+import * as Globals from "./globals";
 import { onMounted, ref, Ref } from "vue";
+
+let globals = Globals
 
 const galleryContainer = ref<HTMLDivElement | null>(null)
 const gallery = ref<HTMLDivElement | null>(null)
@@ -70,9 +73,21 @@ function initSlider() {
 }
 
 onMounted(async () => {
+
     sliderActive = false;
-    initSlider()
+
     if (!galleryContainer.value) return
+
+    initSlider()
+
+    let images = Array.from(document.querySelectorAll(".gallery-image")) as HTMLDivElement[]
+
+    // WIP! set gallery image source; improve to make more dynamic
+    for (let i = 0; i < images.length; i++) {
+        let image = images[i]
+        image.classList.add(`image${i}`)
+        image.style.backgroundImage = globals.galleryImage
+    }
 
     galleryContainer.value.addEventListener("mousemove", (event: MouseEvent) => {
         event.preventDefault()
@@ -119,13 +134,13 @@ onMounted(async () => {
 
     div {
         position: absolute;
-        height: 850px;
+        height: 100vh;
+        background-position: center;
         width: 600px;
-        background-image: url("/assets/images/kaz-2.jpg");
     }
 }
 
-
+// mimic different images
 .image1 {
     filter: grayscale(1);
 }

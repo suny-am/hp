@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import Landing from './components/Landing.vue'
+import Intro from "./components/Intro.vue";
+
 </script>
 
 <template>
-  <Landing />
+  <Intro />
 </template>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>
