@@ -9,15 +9,10 @@ interface IColors {
     success: string,
 }
 
-const mailTo = "mailto:visualarea.1@gmail.com"
-const galleryImage = "/assets/images/kaz-1.jpg"
-const logoText1 = "carl sandberg"
-const logoText2 = "designworks."
-const comingSoon = "coming soon..."
 const colors = {
-    foreground: "rgba(255, 255, 255, 0.87)",
+    foreground: "rgba(205, 205, 205, 1)",
     background: "#0d070f",
-    logo: "rgb(241, 198, 8)",
+    logo: "rgb(241, 121, 8)",
     error: "rgb(224, 53, 53)",
     warning: "rgb(241, 150, 30)",
     accent1: "rgb(218, 95, 218)",
@@ -26,10 +21,5 @@ const colors = {
 } as IColors
 
 export {
-    mailTo,
-    galleryImage,
-    logoText1,
-    logoText2,
-    comingSoon,
-    colors
-} 
+    colors,
+}

@@ -1,25 +1,3 @@
-<script setup lang="ts">
-import { onMounted, ref, Ref } from "vue";
-import SvgIcon from "@jamescoyle/vue-icon";
-import { mdiCloseCircle } from "@mdi/js";
-
-let aboutContainer = ref(null) as Ref<HTMLDivElement | null>;
-
-const closeAbout = () => {
-    if (!aboutContainer.value) return
-    let windowWidth = window.innerWidth
-    aboutContainer.value.style.transition = "all 800ms"
-    aboutContainer.value.style.transform = `translateX(${windowWidth}px)`
-}
-
-onMounted(() => {
-    if (!aboutContainer.value) return
-    let windowWidth = window.innerWidth
-    aboutContainer.value.style.transform = `translateX(${windowWidth}px)`
-})
-
-</script>
-
 <template>
     <div class="about-container" ref="aboutContainer">
         <div class="about-close-button" @click="closeAbout">
@@ -46,6 +24,28 @@ onMounted(() => {
         </div>
     </div>
 </template>
+
+<script setup lang="ts">
+import { onMounted, ref, Ref } from "vue";
+import SvgIcon from "@jamescoyle/vue-icon";
+import { mdiCloseCircle } from "@mdi/js";
+
+let aboutContainer = ref(null) as Ref<HTMLDivElement | null>;
+
+const closeAbout = () => {
+    if (!aboutContainer.value) return
+    let windowWidth = window.innerWidth
+    aboutContainer.value.style.transition = "all 800ms"
+    aboutContainer.value.style.transform = `translateX(${windowWidth}px)`
+}
+
+onMounted(() => {
+    if (!aboutContainer.value) return
+    let windowWidth = window.innerWidth
+    aboutContainer.value.style.transform = `translateX(${windowWidth}px)`
+})
+
+</script>
 
 <style lang="scss">
 @import "../styles/foundation/variables";

@@ -12,10 +12,8 @@
 </template>
 
 <script setup lang="ts">
-import * as Globals from "./globals";
+import * as Data from "./data";
 import { onMounted, ref, Ref } from "vue";
-
-let globals = Globals
 
 const galleryContainer = ref<HTMLDivElement | null>(null)
 const gallery = ref<HTMLDivElement | null>(null)
@@ -23,8 +21,8 @@ const image1 = ref<HTMLDivElement | null>(null)
 const image2 = ref<HTMLDivElement | null>(null)
 const image3 = ref<HTMLDivElement | null>(null)
 
-let startSliderText = "Start Gallery Carousel"
-let stopSliderText = "Stop Gallery Carousel"
+let startSliderText = Data.text.carouselStart
+let stopSliderText = Data.text.carouselStop
 
 let sliderActive = false
 
@@ -86,7 +84,7 @@ onMounted(async () => {
     for (let i = 0; i < images.length; i++) {
         let image = images[i]
         image.classList.add(`image${i}`)
-        image.style.backgroundImage = globals.galleryImage
+        image.style.backgroundImage = Data.links.galleryImage
     }
 
     galleryContainer.value.addEventListener("mousemove", (event: MouseEvent) => {
@@ -119,7 +117,6 @@ onMounted(async () => {
 })
 
 </script>
-
 
 <style scoped lang="scss">
 .gallery {
@@ -170,4 +167,4 @@ onMounted(async () => {
     display: none;
     /* Safari and Chrome */
 }
-</style>
+</style>./data

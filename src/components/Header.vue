@@ -1,15 +1,3 @@
-<script setup lang="ts">
-
-function getAboutPage() {
-    let aboutPage = document.querySelector(".about-container") as HTMLDivElement
-    if (!aboutPage) return
-
-    aboutPage.style.transition = "all 800ms"
-    aboutPage.style.transform = "translateX(0px)"
-}
-
-</script>
-
 <template>
     <header>
         <div class="logo">
@@ -27,6 +15,18 @@ function getAboutPage() {
         </nav>
     </header>
 </template>
+
+<script setup lang="ts">
+
+function getAboutPage() {
+    let aboutPage = document.querySelector(".about-container") as HTMLDivElement
+    if (!aboutPage) return
+
+    aboutPage.style.transition = "all 800ms"
+    aboutPage.style.transform = "translateX(0px)"
+}
+
+</script>
 
 <style scoped>
 header {

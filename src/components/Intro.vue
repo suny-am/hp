@@ -1,141 +1,147 @@
+<template>
+    <div id="title-container" ref="titleContainer">
+        <h2></h2>
+        <h1></h1>
+        <h3></h3>
+    </div>
+    <svg id="svg-container" width="550" height="550" ref="svgContainer">
+        <g id="circles" :stroke="Data.colors.logo" fill="none">
+
+        </g>
+    </svg>
+</template>
+
 <script setup lang="ts">
-import * as Globals from "./globals"
 import { onMounted, ref, Ref } from 'vue';
+import * as Data from "./data"
 
-const globals = Globals,
-
-    logo = ref(null) as Ref<HTMLDivElement | null>,
-    introCircle = ref(null) as Ref<SVGCircleElement | null>,
-    introCircleCore = ref(null) as Ref<SVGCircleElement | null>,
+/**
+ * 
+ * 
+ @remarks
+ Creates circles from two arcs 
+ @remarks
+ Formula:
+ "M: Cx+R Cy
+ A: R R 0 1 1 Cx-R Cy
+ A: R R 0 1 1 Cx+R Cy"
+ @param centerX center X absolute coordinate number
+ @param centerY center Y absolute coordinate number 
+ @param radius circle radius number
+ @returns xml namespace compatible path string
+*/
+const drawCircle = (centerX: number, centerY: number, radius: number): string => {
+    let d =
+        `M  ${centerX + radius} ${centerY}
+         A ${radius} ${radius} 0 1 1 ${centerX - radius} ${centerY}
+         A ${radius} ${radius} 0 1 1 ${centerX + radius} ${centerY}`
+    return d
+},
     svgContainer = ref(null) as Ref<SVGElement | null>,
-
-    svgBoxWidth = () => { return `${document.body.clientWidth}` },
-    svgBoxHeight = () => { return `${document.body.clientHeight}` },
-    svgCircleRadius = () => { return `${document.body.clientWidth * 0.75}` },
-    svgViewBoxSize = () => { return `0 0 ${svgBoxWidth()} ${svgBoxHeight()}` }
+    titleContainer = ref(null) as Ref<HTMLDivElement | null>
 
 onMounted(() => {
-    if (!logo.value || !svgContainer.value || !introCircle.value || !introCircleCore.value) return
 
-    introCircle.value.setAttribute("cy", svgBoxHeight())
-    introCircleCore.value.setAttribute("cy", svgBoxHeight())
-
-    svgContainer.value.setAttribute("viewBox", `0 0 ${svgBoxWidth()} ${svgBoxHeight()}`)
-
-    for (let i = 0; i < 40; i++) {
-        let circle = svgContainer.value.childNodes.values().next().value
-        let circleCopy = circle.cloneNode()
-        circleCopy.setAttribute("r", circle.attributes.r.value * 0.025 * i)
-        svgContainer.value.appendChild(circleCopy)
+    if (titleContainer.value) {
+        console.log("HEY!")
+        titleContainer.value.childNodes.item(0).textContent = Data.text.logoText1
+        titleContainer.value.childNodes.item(1).textContent = Data.text.logoText2
+        titleContainer.value.childNodes.item(2).textContent = Data.text.comingSoon
     }
 
-    let logoUpper = logo.value.childNodes.item(0) as HTMLHeadingElement,
-        logoLower = logo.value.childNodes.item(1) as HTMLHeadingElement,
-        comingSoon = logo.value.childNodes.item(2) as HTMLHeadingElement
+    let circles = document.getElementById("circles")
+    if (!circles || !svgContainer.value) return
 
-    logoUpper.textContent = globals.logoText1
-    logoLower.textContent = globals.logoText2
-    comingSoon.textContent = globals.comingSoon
-    comingSoon.style.opacity = "0.5"
-    comingSoon.style.fontSize = "20px"
+    let centerX = svgContainer.value.clientWidth / 2,
+        centerY = svgContainer.value.clientHeight / 2,
+        refRadius = 60,
+        solarRadius = 15,
+        planetRadius = 5,
+        solarPath = document.createElementNS(Data.links.xlmns, "path"),
+        solarD = drawCircle(centerX, centerY, solarRadius)
 
+    solarPath.setAttribute("d", solarD)
+    solarPath.setAttribute("fill", Data.colors.logo)
+    solarPath.setAttribute("id", `solar-path`)
+
+    circles.appendChild(solarPath)
+
+    for (let i = 1; i < 9; i++) {
+
+        let pathID = `circle-path${i}`
+
+        let circleDistance = 0.55
+        let path = document.createElementNS(Data.links.xlmns, "path")
+        let radius = refRadius * i * circleDistance
+        let d = drawCircle(centerX, centerY, radius)
+        path.setAttribute("d", d)
+        path.setAttribute("id", pathID)
+
+        let adjustedPlanetRadius: number
+
+        if (i == 5 || i == 6) {
+            adjustedPlanetRadius = planetRadius * i * 0.3
+        } else {
+            adjustedPlanetRadius = planetRadius
+        }
+
+        let planet = document.createElementNS(Data.links.xlmns, "circle")
+        planet.setAttribute("cx", `${radius}`)
+        planet.setAttribute("cy", `${radius}`)
+        planet.setAttribute("r", `${adjustedPlanetRadius}`)
+        planet.setAttribute("fill", Data.colors.foreground)
+        planet.setAttribute("stroke", "none")
+
+        let motion = document.createElementNS(Data.links.xlmns, "animateMotion")
+        motion.setAttribute("dur", `${i * 6}s`)
+        motion.setAttribute("repeatCount", "indefinite")
+        motion.setAttribute("rotate", "auto")
+
+        let mpath = document.createElementNS(Data.links.xlmns, "mpath")
+        mpath.setAttribute("href", `#${pathID}`)
+
+        motion.appendChild(mpath)
+
+        planet.appendChild(motion)
+
+        circles.appendChild(path)
+
+        circles.appendChild(planet)
+    }
 })
 
 </script>
 
-<template>
-    <div class="intro-container">
-        <div class="logo" ref="logo">
-            <h2></h2>
-            <h1></h1>
-            <h3></h3>
-        </div>
-        <svg :viewBox="svgViewBoxSize()" xmlns="http://www.w3.org/2000/svg" class="svg-container" ref="svgContainer">
-            <circle :cx="svgBoxWidth()" :cy="svgBoxHeight()" :r="svgCircleRadius()" ref="introCircle"
-                :stroke="globals.colors.logo" stroke-width="1" />
-            <circle :cx="svgBoxWidth()" :cy="svgBoxHeight()" r="25" :fill="globals.colors.logo" fill-opacity="1"
-                ref="introCircleCore" />
-        </svg>
-    </div>
-</template>
-
-
 <style lang="scss">
 @use "../styles/foundation/colors";
-@use "../styles/foundation/fonts";
 
 body {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
     background: colors.$gradient;
 }
 
-.svg-container {
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    fill-opacity: 0;
-}
-
-.intro-container {
-    color: colors.$logo;
-    font-family: fonts.$logo;
+#title-container {
     display: flex;
     flex-flow: column;
-    align-items: flex-start;
-    justify-content: center;
-    width: 100vw;
-    height: 100vh;
+    align-self: center;
 
-    .logo {
-        padding-bottom: 0.5rem;
-        margin: 0 0 0 1rem;
-        text-transform: capitalize;
-        font-size: 150%;
-
-        h1 {
-            text-transform: uppercase;
-        }
-
-        h1,
-        h2 {
-            margin: 0;
-            padding: 0;
-            line-height: 2.5rem;
-        }
+    h1,
+    h2,
+    h3 {
+        text-align: start;
+        text-transform: uppercase;
+        margin: 0;
+        padding: 0;
     }
-}
 
-@media screen and (max-width: 400px) {
-    .intro-container {
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        .logo {
-            display: flex;
-            flex-flow: column;
-            justify-content: center;
-            align-items: center;
-
-            h1 {
-                margin-left: 5px;
-            }
-
-            h2 {
-                margin-bottom: 1em;
-                text-wrap: pretty;
-                height: 100x;
-                writing-mode: vertical-lr;
-                font-size: small;
-                text-transform: uppercase
-            }
-
-
-            h1 {
-                writing-mode: vertical-rl;
-            }
-        }
-
+    h1,
+    h2 {
+        color: colors.$logo;
+        line-height: 1.4rem;
     }
 }
 </style>
