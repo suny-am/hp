@@ -57,18 +57,22 @@ onMounted(() => {
         // TBD! Abstract away logic into globals/helpers?
         setInterval(() => {
             let textContent = titleContainer.value!.childNodes.item(2).textContent
-            switch (textContent) {
-                case "coming soon ...":
-                    titleContainer.value!.childNodes.item(2).textContent = "coming soon"
+            if (!textContent) return
+            
+            let dotMatch = [...textContent.matchAll(/\./g)]
+            
+            switch (dotMatch.length) {
+                case 3:
+                    titleContainer.value!.childNodes.item(2).textContent = `${textContent.replace(dotMatch.join(""), "")}`
                     break;
-                case "coming soon ..":
-                    titleContainer.value!.childNodes.item(2).textContent = "coming soon ..."
+                case 2:
+                    titleContainer.value!.childNodes.item(2).textContent = `${textContent.replace(dotMatch.join(""), "...")}`
                     break;
-                case "coming soon .":
-                    titleContainer.value!.childNodes.item(2).textContent = "coming soon .."
+                case 1:
+                    titleContainer.value!.childNodes.item(2).textContent = `${textContent.replace(dotMatch.join(""), "..")}`
                     break;
-                case "coming soon":
-                    titleContainer.value!.childNodes.item(2).textContent = "coming soon ."
+                case 0:
+                    titleContainer.value!.childNodes.item(2).textContent = `${textContent}.`
                     break;
                 default:
                     break;
@@ -187,9 +191,11 @@ onMounted(() => {
         h1 {
             font-size: 1.5em;
         }
+
         h2 {
             font-size: 1.2em;
         }
+
         h3 {
             font-size: small;
         }

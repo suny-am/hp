@@ -1,7 +1,7 @@
 
 const logoText1 = "carl sandberg"
 const logoText2 = "designworks."
-const comingSoon = "coming soon"
+const comingSoon = "status:coming soon"
 const carouselStart = "Start gallery carousel"
 const carouselStop = "Stop gallery carousel"
 
