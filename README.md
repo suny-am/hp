@@ -15,7 +15,7 @@ This project is based on [Vue](https://vuejs.org/) + [VitePress](https://vitepre
 git clone https://github.com/suny-am/hp.git && \
 cd hp && \
 yarn build && \
-yarn preview preview
+yarn preview
 ```
 ## Contact
 [visualarea.1@gmail.com](mailto:visualarea.1@gmail.com)
